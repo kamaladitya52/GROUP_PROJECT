@@ -8,6 +8,10 @@ import mongoose from "mongoose";
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
     const user = await User.findById(userId);
+    if (!user) {
+      throw new ApiError(404, "User not found");
+    }
+
     const accessToken = user.generateAccessToken();
     const refreshToken = user.generateRefreshToken();
 
@@ -16,6 +20,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
 
     return { accessToken, refreshToken };
   } catch (error) {
+    console.error("Error generating tokens:", error); // Log error details
     throw new ApiError(
       500,
       "Something went wrong while generating refresh and access token"
@@ -25,27 +30,25 @@ const generateAccessAndRefreshTokens = async (userId) => {
 
 const registerUser = asyncHandler(async (req, res) => {
   const { email, username, password } = req.body;
-
   if ([email, username, password].some((field) => field?.trim() === ""))
     throw new ApiError(400, "All fields are required");
 
   const existedUser = await User.findOne({
-    $or: [{ email }, { username }], // using $or: is use as "or" operator where "$" is use to assigned operator
+    $or: [{ email }, { username }],
   });
 
   if (existedUser) {
     throw new ApiError(409, "User with email or username already exists.");
   }
-  console.log(req.files);
 
   const user = await User.create({
-    email,
-    password,
-    username: username.toLowerCase(),
+    email: email,
+    password: password,
+    username: username,
   });
 
   const createdUser = await User.findById(user._id).select(
-    "-password -refreshToken" // By-default all are selected so we have to write only those field using "-"(minus sign) which field need not to be select using " " (space seprated) inside string.
+    "-password -refreshToken"
   );
 
   if (!createdUser) {
@@ -60,56 +63,37 @@ const registerUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, createdUser, "User Registered Successfully"));
 });
 
-const loginUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
-  if (!email) throw new ApiError(400, "email is required");
+const loginUser = async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    // Find user by username
+    const user = await User.findOne({ username });
+    if (!user || !(await user.isValidPassword(password))) {
+      return res.status(401).json({ message: "Invalid username or password" });
+    }
 
-  const user = await User.findOne(email);
+    // Log user details for debugging
+    console.log("User found:", user);
 
-  if (!user) throw new ApiError(404, "User does not exist.");
-
-  const isPasswordValid = await user.isPasswordCorrect(password);
-
-  if (!isPasswordValid) throw new ApiError(401, "Invalid User Credentials.");
-
-  const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
-    user._id
-  );
-
-  const loggedInUser = User.findById(user._id).select(
-    "-password -refreshToken"
-  );
-  const options = {
-    httpOnly: true,
-    secure: true,
-  };
-
-  return res
-    .status(200)
-    .cookie("accessToken", accessToken, options)
-    .cookie("refreshToken", refreshToken, options)
-    .json(
-      new ApiResponse(
-        200,
-        {
-          user: loggedInUser,
-          accessToken,
-          refreshToken,
-        },
-        "User Logged In Succesfully"
-      )
+    // Generate tokens
+    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
+      user._id
     );
-});
+    res.status(200).json({ accessToken, refreshToken });
+  } catch (error) {
+    console.error("Error logging in:", error); // Log error details
+    res.status(500).json({ message: "Something went wrong during login" });
+  }
+};
 
 const logoutUser = asyncHandler(async (req, res) => {
   await User.findByIdAndUpdate(
     req.user._id,
     {
-      // $set use to update the given fields
       $set: { refreshToken: undefined },
     },
     {
-      new: true, // new use to return the new updated value
+      new: true,
     }
   );
   const options = {
@@ -171,6 +155,5 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     throw new ApiError(401, error?.message || "Invalid Refresh Token.");
   }
 });
-
 
 export { registerUser, loginUser, logoutUser, refreshAccessToken };
