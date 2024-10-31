@@ -8,10 +8,6 @@ import mongoose from "mongoose";
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
     const user = await User.findById(userId);
-    if (!user) {
-      throw new ApiError(404, "User not found");
-    }
-
     const accessToken = user.generateAccessToken();
     const refreshToken = user.generateRefreshToken();
 
@@ -20,7 +16,6 @@ const generateAccessAndRefreshTokens = async (userId) => {
 
     return { accessToken, refreshToken };
   } catch (error) {
-    console.error("Error generating tokens:", error); // Log error details
     throw new ApiError(
       500,
       "Something went wrong while generating refresh and access token"
@@ -63,28 +58,39 @@ const registerUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, createdUser, "User Registered Successfully"));
 });
 
-const loginUser = async (req, res) => {
-  const { username, password } = req.body;
-  try {
-    // Find user by username
-    const user = await User.findOne({ username });
-    if (!user || !(await user.isValidPassword(password))) {
-      return res.status(401).json({ message: "Invalid username or password" });
-    }
+const loginUser = asyncHandler(async (req, res) => {
+  const { username, email, password } = req.body;
+  if (!username && !email)
+    throw new ApiError(400, "username or email is required");
 
-    // Log user details for debugging
-    console.log("User found:", user);
+  const user = await User.findOne({
+    $or: [{ username }, { email }],
+  });
 
-    // Generate tokens
-    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
-      user._id
-    );
-    res.status(200).json({ accessToken, refreshToken });
-  } catch (error) {
-    console.error("Error logging in:", error); // Log error details
-    res.status(500).json({ message: "Something went wrong during login" });
-  }
-};
+  if (!user) throw new ApiError(404, "User does not exist.");
+
+  const isPasswordValid = await user.isPasswordCorrect(password);
+
+  if (!isPasswordValid) throw new ApiError(401, "Invalid User Credentials.");
+
+  const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
+    user._id
+  );
+
+  const loggedInUser = User.findById(user._id).select(
+    "-password -refreshToken"
+  );
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json({ accessToken, refreshToken });
+});
 
 const logoutUser = asyncHandler(async (req, res) => {
   await User.findByIdAndUpdate(
@@ -155,5 +161,4 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     throw new ApiError(401, error?.message || "Invalid Refresh Token.");
   }
 });
-
 export { registerUser, loginUser, logoutUser, refreshAccessToken };

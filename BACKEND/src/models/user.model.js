@@ -67,8 +67,4 @@ userSchema.methods.generateRefreshToken = function () {
   );
 };
 
-userSchema.methods.isValidPassword = async function (password) {
-  return await bcrypt.compare(password, this.password); // Assuming you are using bcrypt
-};
-
 export const User = mongoose.model("User", userSchema);
