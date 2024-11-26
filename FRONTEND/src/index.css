@@ -1,0 +1,366 @@
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,500;1,500&family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,500;1,500&family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap');
+
+:root {
+  margin: 0;
+  padding: 0;
+  font-family:'Inter Tight',Arial, Helvetica, sans-serif;
+  background-color: #1E1E1E;
+  color: white;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.bg{
+  padding: 20px;
+  border-radius: 10px;
+  width: 1200px;
+  height: 500px;
+  background-color: #2e2e2e;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 7px;
+}
+
+.content-container {
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  border-radius: 7px;
+  position: absolute;
+  top: 120px;
+}
+
+.Login{
+font-size:medium;
+text-align: center;
+}
+.signup{
+font-size:medium;
+text-align: center;
+}
+
+.signup-login-text{
+  font-size: small;
+}
+
+.signup-login-container{
+  display: flex;
+  align-items: center; /* Aligns items vertically in the center */
+  gap: 15px; /* Adds space between the elements, adjust as needed */
+}
+
+.signup-text{
+  padding-left: 110px;
+  font-size: small;
+  color: white;
+  text-decoration: none; /* Removes the underline */
+  font-weight: bold; 
+  transition: 0.3s;
+}
+.signup-text:hover{
+ color: #2980b9;
+}
+
+.login-text{
+  padding-left: 107px;
+  font-size: small;
+  color: white;
+  text-decoration: none; /* Removes the underline */
+  font-weight: bold; 
+  transition: 0.3s;
+}
+.login-text:hover{
+ color: #2980b9;
+}
+
+.signup-login-text, .signup-text .login-text{
+  margin: 0; /* Removes any default margin, if present */
+}
+
+.input-box {
+  width: 300px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: none;
+  height: 49px;
+  font-size: 16px;
+  align-self: center;
+  color:#A1A1A1;
+  background-color: #404040; /* Background color for the minimalistic look */              /* Text color */
+  border: none;               /* Removes border */
+  outline: none;         /* Removes focus outline */
+  padding-left: 10px;        /* Adds padding to move the cursor away from the edge */
+  box-sizing: border-box; 
+}
+
+.input-box::placeholder {
+  color: #A1A1A1; 
+  padding: auto;
+  font-size: 12px;
+}
+
+.action-btn {
+  width: 100%;
+  padding: 10px;
+  font-family: 'inter tight',Arial, Helvetica, sans-serif;
+  font-weight: 600;
+  background-color: #77A3F0;
+  color: white;
+  width: 300px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  align-self: center; /* Centers the button horizontally */
+  transition: 0.5s;
+}
+
+.action-btn:hover {
+  background-color: #2980b9;
+  
+}
+
+.navbar-container {
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center; /* Centers the navbar horizontally */
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+/* Navbar */
+.navbar {
+  width: 100%;
+  max-width: 1200px;
+  height: 40px;
+  background-color: #2e2e2e;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 7px;
+}
+
+
+.logo {
+  color: #3498db;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  position: relative;
+  right: 20px;
+  font-family: 'inter tight',Arial, Helvetica, sans-serif;
+  font-weight: 500;
+ 
+}
+
+.nav-links .nav-item:first-child {
+  color: #77A3F0; /* Replace with your desired color */
+}
+
+.nav-item {
+  color: #A1A1A1;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.nav-item:hover {
+  color:#c0c0c0;
+}
+/* JOIN MEET N CODE BELOW */
+
+.join-bg{
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  width: 1200px;
+  height: 430px;
+  background-color: #2e2e2e;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 7px;
+}
+
+.join-zoom-container {
+  margin-top: 40px;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  border-radius: 7px;
+  position: absolute;
+  top: 120px;
+}
+
+
+.join-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  align-self:center;
+  font-weight: bold;
+  font-family: 'Roboto Flex',Arial, Helvetica, sans-serif;
+}
+
+.join-input-box {
+  width: 300px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: none;
+  height: 49px;
+  font-size: 16px;
+  align-self: center;
+  color:#A1A1A1;
+  background-color: #404040; /* Background color for the minimalistic look /              / Text color */
+  border: none;               /* Removes border */
+  outline: none;         /* Removes focus outline */
+  padding-left: 10px;        /* Adds padding to move the cursor away from the edge */
+  box-sizing: border-box; 
+}
+
+.join-input-box::placeholder {
+  color: #A1A1A1; 
+  padding: auto;
+  font-size: 12px;
+}
+
+.join-terms-text {
+  font-size: 13px;
+  margin-bottom: 20px;
+  text-align: left; /* Aligns text to the left */
+  align-self: center;
+  font-weight: 500;
+}
+
+.join-terms-text a {
+  color: #77A3F0;
+  text-decoration: none;
+}
+
+.join-create-btn {
+  width: 100%;
+  padding: 10px;
+  font-family: 'inter tight',Arial, Helvetica, sans-serif;
+  font-weight: 600;
+  background-color: #77a3f078;
+  color: white;
+  width: 300px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  align-self: center; /* Centers the button horizontally */
+  transition: 0.1s;
+}
+
+.join-create-btn:hover {
+  background-color: #297fb934;
+  outline: 2px solid #2980b9;
+}
+
+.join-or-text{
+  font-family: 'inter tight';
+  font-size: 10px;
+  color: #a1a1a1;
+  text-align: center;
+  padding-top: 10px ;
+  padding-bottom: 10px;
+}
+
+.join-join-btn {
+  width: 100%;
+  padding: 10px;
+  font-family: 'inter tight',Arial, Helvetica, sans-serif;
+  font-weight: 600;
+  background-color: #77A3F0;
+  color: white;
+  width: 300px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  align-self: center; /* Centers the button horizontally */
+  transition: 0.2s;
+}
+
+.join-join-btn:hover {
+  background-color: #2980b9;
+}
+
+/* Navbar Styles */
+/* Navbar Container */
+.join-navbar-container {
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center; /* Centers the navbar horizontally */
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+/* Navbar */
+.join-navbar {
+  width: 100%;
+  max-width: 1200px;
+  height: 40px;
+  background-color: #2e2e2e;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+}
+
+.join-logo {
+  color: #3498db;
+  font-size: 20px;
+  font-weight: 500;
+  font-family: 'inter tight',Arial, Helvetica, sans-serif ;
+}
+
+/* Fullscreen Background Container */
+.fullscreen-bg {
+  width: 100vw;
+  height: 100vh;
+  background-color: #1c1c1c;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
